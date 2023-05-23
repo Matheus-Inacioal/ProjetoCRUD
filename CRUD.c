@@ -131,6 +131,34 @@ void excluirUsuario() {
     printf("Usuario excluido com sucesso.\n");
 }
 
+void buscarUsuarioPorEmail() {
+    char email[MAX_EMAIL];
+    printf("Digite o email do usuario que deseja buscar: ");
+    getchar(); // Limpa o buffer do teclado
+    fgets(email, MAX_EMAIL, stdin);
+    email[strcspn(email, "\n")] = '\0';
+
+    int encontrado = 0;
+    for (int i = 0; i < totalUsuarios; i++) {
+        if (strcmp(emails[i], email) == 0) {
+            encontrado = 1;
+            printf("Usuario encontrado:\n");
+            printf("ID: %d\n", ids[i]);
+            printf("Nome: %s\n", nomes[i]);
+            printf("Email: %s\n", emails[i]);
+            printf("Sexo: %s\n", sexos[i]);
+            printf("Endereco: %s\n", enderecos[i]);
+            printf("Altura: %.2lf\n", alturas[i]);
+            printf("Vacinado: %s\n", vacinas[i] ? "Sim" : "Nao");
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        printf("Usuario nao encontrado.\n");
+    }
+}
+
 int main() {
     char opcao;
     do {
@@ -157,26 +185,25 @@ int main() {
                 excluirUsuario();
                 break;
             case '4':
-                // Implementar funcao de buscar usuario pelo email
+                buscarUsuarioPorEmail();
                 break;
             case '5':
-                // Implementar funcao de imprimir usuarios cadastrados
+                imprimirUsuarios();
                 break;
             case '6':
-                // Implementar funcao de fazer backup dos usuarios cadastrados
+                fazerBackup();
                 break;
             case '7':
-                // Implementar funcao de fazer restauracao dos dados
+                fazerRestauracao();
                 break;
             case '0':
-                printf("Encerrando o programa...\n");
+                printf("Saindo...\n");
                 break;
             default:
-                printf("Opcao invalida. Tente novamente.\n");
+                printf("Opcao invalida.\n");
         }
 
         printf("\n");
-
     } while (opcao != '0');
 
     return 0;
