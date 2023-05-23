@@ -38,14 +38,14 @@ void cadastrarUsuario() {
     fgets(sexos[totalUsuarios], MAX_SEXO, stdin);
     sexos[totalUsuarios][strcspn(sexos[totalUsuarios], "\n")] = '\0';
 
-    printf("Digite o endereço do usuario: ");
+    printf("Digite o endereco do usuario: ");
     fgets(enderecos[totalUsuarios], MAX_ENDERECO, stdin);
     enderecos[totalUsuarios][strcspn(enderecos[totalUsuarios], "\n")] = '\0';
 
     printf("Digite a altura do usuario (em metros): ");
     scanf("%lf", &alturas[totalUsuarios]);
 
-    printf("O usuario foi vacinado? (1 - Sim / 0 - Não): ");
+    printf("O usuario foi vacinado? (1 - Sim / 0 - Nao): ");
     scanf("%d", &vacinas[totalUsuarios]);
 
     totalUsuarios++;
@@ -84,32 +84,66 @@ void editarUsuario() {
     fgets(sexos[indice], MAX_SEXO, stdin);
     sexos[indice][strcspn(sexos[indice], "\n")] = '\0';
 
-    printf("Digite o novo endereço do usuario: ");
+    printf("Digite o novo endereco do usuario: ");
     fgets(enderecos[indice], MAX_ENDERECO, stdin);
     enderecos[indice][strcspn(enderecos[indice], "\n")] = '\0';
 
     printf("Digite a nova altura do usuario (em metros): ");
     scanf("%lf", &alturas[indice]);
 
-    printf("O usuario foi vacinado? (1 - Sim / 0 - Não): ");
+    printf("O usuario foi vacinado? (1 - Sim / 0 - Nao): ");
     scanf("%d", &vacinas[indice]);
 
     printf("Usuario editado com sucesso.\n");
 }
 
+void excluirUsuario() {
+    int id;
+    printf("Digite o ID do usuario que deseja excluir: ");
+    scanf("%d", &id);
+
+    int indice = -1;
+    for (int i = 0; i < totalUsuarios; i++) {
+        if (ids[i] == id) {
+            indice = i;
+            break;
+        }
+    }
+
+    if (indice == -1) {
+        printf("Usuario nao encontrado.\n");
+        return;
+    }
+
+    // Desloca os usuários à direita do usuário excluído
+    for (int i = indice; i < totalUsuarios - 1; i++) {
+        ids[i] = ids[i + 1];
+        strcpy(nomes[i], nomes[i + 1]);
+        strcpy(emails[i], emails[i + 1]);
+        strcpy(sexos[i], sexos[i + 1]);
+        strcpy(enderecos[i], enderecos[i + 1]);
+        alturas[i] = alturas[i + 1];
+        vacinas[i] = vacinas[i + 1];
+    }
+
+    totalUsuarios--;
+
+    printf("Usuario excluido com sucesso.\n");
+}
+
 int main() {
     char opcao;
     do {
-        printf("Selecione uma opçao:\n");
+        printf("Selecione uma opcao:\n");
         printf("1 - Cadastrar usuario\n");
         printf("2 - Editar usuario\n");
         printf("3 - Excluir usuario\n");
         printf("4 - Buscar usuario pelo email\n");
         printf("5 - Imprimir usuarios cadastrados\n");
         printf("6 - Fazer backup dos usuarios cadastrados\n");
-        printf("7 - Fazer restauraçao dos dados\n");
+        printf("7 - Fazer restauracao dos dados\n");
         printf("0 - Sair\n");
-        printf("Opçao: ");
+        printf("Opcao: ");
         scanf(" %c", &opcao);
 
         switch (opcao) {
@@ -120,25 +154,25 @@ int main() {
                 editarUsuario();
                 break;
             case '3':
-                // Implementar função de excluir usuário
+                excluirUsuario();
                 break;
             case '4':
-                // Implementar função de buscar usuário por email
+                // Implementar funcao de buscar usuario pelo email
                 break;
             case '5':
-                // Implementar função de imprimir usuários cadastrados
+                // Implementar funcao de imprimir usuarios cadastrados
                 break;
             case '6':
-                // Implementar função de fazer backup dos usuários cadastrados
+                // Implementar funcao de fazer backup dos usuarios cadastrados
                 break;
             case '7':
-                // Implementar função de fazer restauração dos dados
+                // Implementar funcao de fazer restauracao dos dados
                 break;
             case '0':
                 printf("Encerrando o programa...\n");
                 break;
             default:
-                printf("Opção invalida. Tente novamente.\n");
+                printf("Opcao invalida. Tente novamente.\n");
         }
 
         printf("\n");
