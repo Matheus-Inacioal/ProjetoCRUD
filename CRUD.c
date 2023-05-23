@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #define MAX_USUARIOS 1000
 #define MAX_NOME 50
@@ -24,6 +26,30 @@ char usuariosExcluidosEnderecos[MAX_USUARIOS][MAX_ENDERECO];
 double usuariosExcluidosAlturas[MAX_USUARIOS];
 int usuariosExcluidosVacinas[MAX_USUARIOS];
 
+int validarEmail(const char *email) {
+    int temArroba = 0;
+    int tamanho = strlen(email);
+    for (int i = 0; i < tamanho; i++) {
+        if (email[i] == '@') {
+            temArroba = 1;
+            break;
+        }
+    }
+    return temArroba;
+}
+
+int validarSexo(const char *sexo) {
+    return strcmp(sexo, "Feminino") == 0 || strcmp(sexo, "Masculino") == 0 || strcmp(sexo, "Indiferente") == 0;
+}
+
+int validarAltura(double altura) {
+    return altura >= 1.0 && altura <= 2.0;
+}
+
+int validarVacina(int vacina) {
+    return vacina == 0 || vacina == 1;
+}
+
 void cadastrarUsuario() {
     if (totalUsuarios == MAX_USUARIOS) {
         printf("Limite de usuários atingido.\n");
@@ -37,10 +63,20 @@ void cadastrarUsuario() {
     printf("Digite o email do usuário: ");
     fgets(emails[totalUsuarios], MAX_EMAIL, stdin);
     emails[totalUsuarios][strcspn(emails[totalUsuarios], "\n")] = '\0';
+    while (!validarEmail(emails[totalUsuarios])) {
+        printf("Email inválido. Digite novamente: ");
+        fgets(emails[totalUsuarios], MAX_EMAIL, stdin);
+        emails[totalUsuarios][strcspn(emails[totalUsuarios], "\n")] = '\0';
+    }
 
     printf("Digite o sexo do usuário (Feminino/Masculino/Indiferente): ");
     fgets(sexos[totalUsuarios], MAX_SEXO, stdin);
     sexos[totalUsuarios][strcspn(sexos[totalUsuarios], "\n")] = '\0';
+    while (!validarSexo(sexos[totalUsuarios])) {
+        printf("Sexo inválido. Digite novamente: ");
+        fgets(sexos[totalUsuarios], MAX_SEXO, stdin);
+        sexos[totalUsuarios][strcspn(sexos[totalUsuarios], "\n")] = '\0';
+    }
 
     printf("Digite o endereço do usuário: ");
     fgets(enderecos[totalUsuarios], MAX_ENDERECO, stdin);
@@ -48,9 +84,17 @@ void cadastrarUsuario() {
 
     printf("Digite a altura do usuário (em metros): ");
     scanf("%lf", &alturas[totalUsuarios]);
+    while (!validarAltura(alturas[totalUsuarios])) {
+        printf("Altura inválida. Digite novamente: ");
+        scanf("%lf", &alturas[totalUsuarios]);
+    }
 
     printf("O usuário foi vacinado? (1 - Sim / 0 - Não): ");
     scanf("%d", &vacinas[totalUsuarios]);
+    while (!validarVacina(vacinas[totalUsuarios])) {
+        printf("Opção inválida. Digite novamente: ");
+        scanf("%d", &vacinas[totalUsuarios]);
+    }
 
     ids[totalUsuarios] = totalUsuarios + 1;
     totalUsuarios++;
@@ -84,10 +128,20 @@ void editarUsuario() {
     printf("Digite o novo email do usuário: ");
     fgets(emails[indice], MAX_EMAIL, stdin);
     emails[indice][strcspn(emails[indice], "\n")] = '\0';
+    while (!validarEmail(emails[indice])) {
+        printf("Email inválido. Digite novamente: ");
+        fgets(emails[indice], MAX_EMAIL, stdin);
+        emails[indice][strcspn(emails[indice], "\n")] = '\0';
+    }
 
     printf("Digite o novo sexo do usuário (Feminino/Masculino/Indiferente): ");
     fgets(sexos[indice], MAX_SEXO, stdin);
     sexos[indice][strcspn(sexos[indice], "\n")] = '\0';
+    while (!validarSexo(sexos[indice])) {
+        printf("Sexo inválido. Digite novamente: ");
+        fgets(sexos[indice], MAX_SEXO, stdin);
+        sexos[indice][strcspn(sexos[indice], "\n")] = '\0';
+    }
 
     printf("Digite o novo endereço do usuário: ");
     fgets(enderecos[indice], MAX_ENDERECO, stdin);
@@ -95,55 +149,19 @@ void editarUsuario() {
 
     printf("Digite a nova altura do usuário (em metros): ");
     scanf("%lf", &alturas[indice]);
+    while (!validarAltura(alturas[indice])) {
+        printf("Altura inválida. Digite novamente: ");
+        scanf("%lf", &alturas[indice]);
+    }
 
     printf("O usuário foi vacinado? (1 - Sim / 0 - Não): ");
     scanf("%d", &vacinas[indice]);
+    while (!validarVacina(vacinas[indice])) {
+        printf("Opção inválida. Digite novamente: ");
+        scanf("%d", &vacinas[indice]);
+    }
 
     printf("Usuário editado com sucesso.\n");
-}
-
-void excluirUsuario() {
-    int id;
-    printf("Digite o ID do usuário a ser excluído: ");
-    scanf("%d", &id);
-
-    int indice = -1;
-    for (int i = 0; i < totalUsuarios; i++) {
-        if (ids[i] == id) {
-            indice = i;
-            break;
-        }
-    }
-
-    if (indice == -1) {
-        printf("Usuário não encontrado.\n");
-        return;
-    }
-
-    // Movendo os dados do usuário excluído para o vetor de usuários excluídos
-    usuariosExcluidosIds[totalUsuariosExcluidos] = ids[indice];
-    strcpy(usuariosExcluidosNomes[totalUsuariosExcluidos], nomes[indice]);
-    strcpy(usuariosExcluidosEmails[totalUsuariosExcluidos], emails[indice]);
-    strcpy(usuariosExcluidosSexos[totalUsuariosExcluidos], sexos[indice]);
-    strcpy(usuariosExcluidosEnderecos[totalUsuariosExcluidos], enderecos[indice]);
-    usuariosExcluidosAlturas[totalUsuariosExcluidos] = alturas[indice];
-    usuariosExcluidosVacinas[totalUsuariosExcluidos] = vacinas[indice];
-    totalUsuariosExcluidos++;
-
-    // Removendo o usuário do vetor de usuários
-    for (int i = indice; i < totalUsuarios - 1; i++) {
-        ids[i] = ids[i + 1];
-        strcpy(nomes[i], nomes[i + 1]);
-        strcpy(emails[i], emails[i + 1]);
-        strcpy(sexos[i], sexos[i + 1]);
-        strcpy(enderecos[i], enderecos[i + 1]);
-        alturas[i] = alturas[i + 1];
-        vacinas[i] = vacinas[i + 1];
-    }
-
-    totalUsuarios--;
-
-    printf("Usuário excluído com sucesso.\n");
 }
 
 void buscarUsuarioPorEmail() {
@@ -152,6 +170,11 @@ void buscarUsuarioPorEmail() {
     getchar();
     fgets(email, MAX_EMAIL, stdin);
     email[strcspn(email, "\n")] = '\0';
+    while (!validarEmail(email)) {
+        printf("Email inválido. Digite novamente: ");
+        fgets(email, MAX_EMAIL, stdin);
+        email[strcspn(email, "\n")] = '\0';
+    }
 
     int encontrado = 0;
     for (int i = 0; i < totalUsuarios; i++) {
@@ -220,54 +243,50 @@ void restaurarDados() {
 }
 
 int main() {
-    char opcao;
+    int opcao;
+    srand(time(NULL));
 
     do {
-        printf("=== MENU ===\n");
-        printf("1 - Cadastrar usuário\n");
+        printf("----- SISTEMA DE CADASTRO DE USUÁRIOS -----\n");
+        printf("1 - Cadastrar novo usuário\n");
         printf("2 - Editar usuário\n");
-        printf("3 - Excluir usuário\n");
-        printf("4 - Buscar usuário por email\n");
-        printf("5 - Imprimir usuários cadastrados\n");
-        printf("6 - Realizar backup dos usuários cadastrados\n");
-        printf("7 - Restaurar dados\n");
+        printf("3 - Buscar usuário por email\n");
+        printf("4 - Imprimir usuários cadastrados\n");
+        printf("5 - Realizar backup\n");
+        printf("6 - Restaurar dados\n");
         printf("0 - Sair\n");
         printf("Escolha uma opção: ");
-        scanf(" %c", &opcao);
-        printf("\n");
+        scanf("%d", &opcao);
 
         switch (opcao) {
-            case '1':
+            case 1:
                 cadastrarUsuario();
                 break;
-            case '2':
+            case 2:
                 editarUsuario();
                 break;
-            case '3':
-                excluirUsuario();
-                break;
-            case '4':
+            case 3:
                 buscarUsuarioPorEmail();
                 break;
-            case '5':
+            case 4:
                 imprimirUsuarios();
                 break;
-            case '6':
+            case 5:
                 realizarBackup();
                 break;
-            case '7':
+            case 6:
                 restaurarDados();
                 break;
-            case '0':
+            case 0:
                 printf("Saindo...\n");
                 break;
             default:
-                printf("Opção inválida. Por favor, tente novamente.\n");
+                printf("Opção inválida. Digite novamente.\n");
                 break;
         }
 
         printf("\n");
-    } while (opcao != '0');
+    } while (opcao != 0);
 
     return 0;
 }
