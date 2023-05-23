@@ -159,6 +159,27 @@ void buscarUsuarioPorEmail() {
     }
 }
 
+void imprimirUsuarios() {
+    if (totalUsuarios == 0) {
+        printf("Nenhum usuario cadastrado.\n");
+        return;
+    }
+
+    printf("Lista de usuarios cadastrados:\n");
+    printf("-------------------------------\n");
+
+    for (int i = 0; i < totalUsuarios; i++) {
+        printf("ID: %d\n", ids[i]);
+        printf("Nome: %s\n", nomes[i]);
+        printf("Email: %s\n", emails[i]);
+        printf("Sexo: %s\n", sexos[i]);
+        printf("Endereco: %s\n", enderecos[i]);
+        printf("Altura: %.2lf\n", alturas[i]);
+        printf("Vacinado: %s\n", vacinas[i] ? "Sim" : "Nao");
+        printf("-------------------------------\n");
+    }
+}
+
 int main() {
     char opcao;
     do {
