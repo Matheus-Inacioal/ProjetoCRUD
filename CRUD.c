@@ -180,6 +180,28 @@ void imprimirUsuarios() {
     }
 }
 
+void fazerBackup() {
+    // Criar um vetor para armazenar os dados de backup
+    Usuario backupUsuarios[MAX_USUARIOS];
+
+    // Copiar os dados dos usuários cadastrados para o vetor de backup
+    for (int i = 0; i < totalUsuarios; i++) {
+        backupUsuarios[i].id = ids[i];
+        strcpy(backupUsuarios[i].nome, nomes[i]);
+        strcpy(backupUsuarios[i].email, emails[i]);
+        strcpy(backupUsuarios[i].sexo, sexos[i]);
+        strcpy(backupUsuarios[i].endereco, enderecos[i]);
+        backupUsuarios[i].altura = alturas[i];
+        backupUsuarios[i].vacina = vacinas[i];
+    }
+
+    // Realizar qualquer ação adicional necessária com o vetor de backup
+    // Por exemplo, você pode salvar o vetor em um arquivo ou realizar outras operações
+
+    printf("Backup dos usuarios cadastrados realizado com sucesso.\n");
+}
+
+
 int main() {
     char opcao;
     do {
