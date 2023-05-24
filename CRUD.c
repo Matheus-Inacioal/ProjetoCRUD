@@ -60,7 +60,7 @@ if (scanf("%lf", &alturas[*totalUsuarios]) != 1) {
 
     printf("Digite a altura do usuario (em metros): ");
 if (scanf("%lf", &vacinas[*totalUsuarios]) != 1 || (vacinas[*totalUsuarios] != 0 && vacinas[*totalUsuarios] != 1)) {
-    printf("Altura invalida. Certifique-se de digitar apenas 0 ou 1.\n");
+    printf("Resposta invalida. Certifique-se de digitar apenas 0 ou 1.\n");
     return;
 }
     
