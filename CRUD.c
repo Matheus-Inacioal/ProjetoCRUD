@@ -24,52 +24,77 @@ void adicionarUsuario(int ids[], char nomes[][MAX_NOME], char emails[][MAX_EMAIL
     int novoId = gerarId();
     ids[*totalUsuarios] = novoId;
     
-    printf("Digite o nome completo do usuario: ");
-    fgets(nomes[*totalUsuarios], MAX_NOME, stdin);
-    nomes[*totalUsuarios][strcspn(nomes[*totalUsuarios], "\n")] = '\0'; // Remove o caractere de nova linha
+    while (1) {
+        printf("Digite o nome completo do usuario: ");
+        fgets(nomes[*totalUsuarios], MAX_NOME, stdin);
+        nomes[*totalUsuarios][strcspn(nomes[*totalUsuarios], "\n")] = '\0'; // Remove o caractere de nova linha
+        
+        if (strlen(nomes[*totalUsuarios]) > 0) {
+            break;
+        }
+        
+        printf("Nome invalido. Por favor, tente novamente.\n");
+    }
     
-    printf("Digite o email do usuario: ");
-fgets(emails[*totalUsuarios], MAX_EMAIL, stdin);
-emails[*totalUsuarios][strcspn(emails[*totalUsuarios], "\n")] = '\0'; // Remove o caractere de nova linha
+    while (1) {
+        printf("Digite o email do usuario: ");
+        fgets(emails[*totalUsuarios], MAX_EMAIL, stdin);
+        emails[*totalUsuarios][strcspn(emails[*totalUsuarios], "\n")] = '\0'; // Remove o caractere de nova linha
 
-    // Validar se o email contém o caractere "@"
-        if (strchr(emails[*totalUsuarios], '@') == NULL) {
-            printf("Email invalido. Certifique-se de incluir o caractere '@' no email.\n");
-            return;
-}   
+        // Validar se o email contem o caractere "@"
+        if (strchr(emails[*totalUsuarios], '@') != NULL) {
+            break;
+        }
+        
+        printf("Email invalido. Certifique-se de incluir o caractere '@' no email.\n");
+    }
     
-    printf("Digite o sexo do usuario (Feminino/Masculino/Indiferente): ");
-fgets(sexos[*totalUsuarios], MAX_SEXO, stdin);
-sexos[*totalUsuarios][strcspn(sexos[*totalUsuarios], "\n")] = '\0'; // Remove o caractere de nova linha
+    while (1) {
+        printf("Digite o sexo do usuario (Feminino/Masculino/Indiferente): ");
+        fgets(sexos[*totalUsuarios], MAX_SEXO, stdin);
+        sexos[*totalUsuarios][strcspn(sexos[*totalUsuarios], "\n")] = '\0'; // Remove o caractere de nova linha
 
-// Validar se o sexo é válido
-if (strcmp(sexos[*totalUsuarios], "Feminino") != 0 && strcmp(sexos[*totalUsuarios], "Masculino") != 0 && strcmp(sexos[*totalUsuarios], "Indiferente") != 0) {
-    printf("Sexo invalido. Certifique-se de digitar 'Feminino', 'Masculino' ou 'Indiferente'.\n");
-    return;
+        // Validar se o sexo e valido
+        if (strcmp(sexos[*totalUsuarios], "Feminino") == 0 || strcmp(sexos[*totalUsuarios], "Masculino") == 0 || strcmp(sexos[*totalUsuarios], "Indiferente") == 0) {
+            break;
+        }
+        
+        printf("Sexo invalido. Certifique-se de digitar 'Feminino', 'Masculino' ou 'Indiferente'.\n");
+    }
+    
+    while (1) {
+        printf("Digite o endereco do usuario: ");
+        fgets(enderecos[*totalUsuarios], MAX_ENDERECO, stdin);
+        enderecos[*totalUsuarios][strcspn(enderecos[*totalUsuarios], "\n")] = '\0'; // Remove o caractere de nova linha
+        
+        if (strlen(enderecos[*totalUsuarios]) > 0) {
+            break;
+        }
+        
+        printf("Endereco invalido. Por favor, tente novamente.\n");
+    }
+    
+    while (1) {
+    printf("Digite a altura do usuario em metros (entre 1 e 2): ");
+    if (scanf("%lf", &alturas[*totalUsuarios]) == 1 && (alturas[*totalUsuarios] >= 1 && alturas[*totalUsuarios] <= 2)) {
+        break;
+    }
+    
+    printf("Altura invalida. Por favor, tente novamente.\n");
 }
 
-    printf("Digite o endereco do usuario: ");
-    fgets(enderecos[*totalUsuarios], MAX_ENDERECO, stdin);
-    enderecos[*totalUsuarios][strcspn(enderecos[*totalUsuarios], "\n")] = '\0'; // Remove o caractere de nova linha
-    
-    printf("Digite a altura do usuario (em metros): ");
-if (scanf("%lf", &alturas[*totalUsuarios]) != 1) {
-    printf("Altura invalida. Certifique-se de digitar um valor numerico.\n");
-    return;
-}
-
-    printf("Digite a altura do usuario (em metros): ");
-if (scanf("%lf", &vacinas[*totalUsuarios]) != 1 || (vacinas[*totalUsuarios] != 0 && vacinas[*totalUsuarios] != 1)) {
-    printf("Resposta invalida. Certifique-se de digitar apenas 0 ou 1.\n");
-    return;
-}
-    
-    
-    getchar(); // Limpa o buffer do teclado
+    while (1) {
+        printf("Digite o status de vacinacao do usuario (1 - Tomou as vacinas / 2 - Nao tomou as vacinas): ");
+        if (scanf("%d", &vacinas[*totalUsuarios]) == 1 && (vacinas[*totalUsuarios] == 1 || vacinas[*totalUsuarios] == 2)) {
+            break;
+        }
+        
+        printf("Opcao invalida. Por favor, tente novamente.\n");
+    }
     
     (*totalUsuarios)++;
     
-    printf("Usuario adicionado com sucesso.\n");
+    printf("Usuario adicionado com sucesso. ID: %d\n", novoId);
 }
 
 // Função para editar um usuário
@@ -239,6 +264,27 @@ void fazerBackup(int ids[], char nomes[][MAX_NOME], char emails[][MAX_EMAIL], ch
     printf("Backup realizado com sucesso.\n");
 }
 
+void restaurarBackup(int ids[], char nomes[][MAX_NOME], char emails[][MAX_EMAIL], char sexos[][MAX_SEXO], char enderecos[][MAX_ENDERECO], double alturas[], int vacinas[], int *totalUsuarios, int backupIds[], char backupNomes[][MAX_NOME], char backupEmails[][MAX_EMAIL], char backupSexos[][MAX_SEXO], char backupEnderecos[][MAX_ENDERECO], double backupAlturas[], int backupVacinas[], int totalBackupUsuarios) {
+    if (totalBackupUsuarios == 0) {
+        printf("Nenhum backup disponível.\n");
+        return;
+    }
+    
+    for (int i = 0; i < totalBackupUsuarios; i++) {
+        ids[i] = backupIds[i];
+        strcpy(nomes[i], backupNomes[i]);
+        strcpy(emails[i], backupEmails[i]);
+        strcpy(sexos[i], backupSexos[i]);
+        strcpy(enderecos[i], backupEnderecos[i]);
+        alturas[i] = backupAlturas[i];
+        vacinas[i] = backupVacinas[i];
+    }
+    
+    *totalUsuarios = totalBackupUsuarios;
+    
+    printf("Backup restaurado com sucesso.\n");
+}
+
 int main() {
     int ids[MAX_USUARIOS];
     char nomes[MAX_USUARIOS][MAX_NOME];
@@ -269,7 +315,8 @@ int main() {
         printf("4. Buscar usuario por email\n");
         printf("5. Imprimir usuarios cadastrados\n");
         printf("6. Fazer backup dos usuarios cadastrados\n");
-        printf("7. Sair\n");
+        printf("7. Restaurar dados dos usuarios cadastrados\n");
+        printf("8. Sair\n");
         printf("Digite a opcao desejada: ");
         scanf("%d", &opcao);
         getchar(); // Limpa o buffer do teclado
@@ -294,6 +341,9 @@ int main() {
                 fazerBackup(ids, nomes, emails, sexos, enderecos, alturas, vacinas, totalUsuarios, backupIds, backupNomes, backupEmails, backupSexos, backupEnderecos, backupAlturas, backupVacinas, &totalBackupUsuarios);
                 break;
             case 7:
+                restaurarBackup(ids, nomes, emails, sexos, enderecos, alturas, vacinas, &totalUsuarios, backupIds, backupNomes, backupEmails, backupSexos, backupEnderecos, backupAlturas, backupVacinas, totalBackupUsuarios);
+                break;
+            case 8:
                 printf("Encerrando o programa.\n");
                 break;
             default:
@@ -302,7 +352,7 @@ int main() {
         }
         
         printf("----------------------\n");
-    } while (opcao != 7);
+    } while (opcao != 8);
     
     return 0;
 }
