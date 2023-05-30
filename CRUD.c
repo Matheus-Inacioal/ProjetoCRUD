@@ -11,7 +11,7 @@
 
 // Função para gerar um ID aleatório
 int gerarId() {
-    return rand() % 1000 + 1;
+    return rand();
 }
 
 // Função para adicionar um usuário
