@@ -266,7 +266,7 @@ void fazerBackup(int ids[], char nomes[][MAX_NOME], char emails[][MAX_EMAIL], ch
 
 void restaurarBackup(int ids[], char nomes[][MAX_NOME], char emails[][MAX_EMAIL], char sexos[][MAX_SEXO], char enderecos[][MAX_ENDERECO], double alturas[], int vacinas[], int *totalUsuarios, int backupIds[], char backupNomes[][MAX_NOME], char backupEmails[][MAX_EMAIL], char backupSexos[][MAX_SEXO], char backupEnderecos[][MAX_ENDERECO], double backupAlturas[], int backupVacinas[], int totalBackupUsuarios) {
     if (totalBackupUsuarios == 0) {
-        printf("Nenhum backup disponível.\n");
+        printf("Nenhum backup disponivel.\n");
         return;
     }
     
@@ -323,13 +323,13 @@ int main() {
         
         switch (opcao) {
             case 1:
-                adicionarUsuario(ids, nomes, emails, sexos, enderecos, alturas, vacinas, &totalUsuarios);
+                adicionarUsuario(ids, nomes, emails, sexos, enderecos, alturas, vacinas, totalUsuarios);
                 break;
             case 2:
                 editarUsuario(ids, nomes, emails, sexos, enderecos, alturas, vacinas, totalUsuarios);
                 break;
             case 3:
-                excluirUsuario(ids, nomes, emails, sexos, enderecos, alturas, vacinas, &totalUsuarios);
+                excluirUsuario(ids, nomes, emails, sexos, enderecos, alturas, vacinas, totalUsuarios);
                 break;
             case 4:
                 buscarUsuarioPorEmail(ids, nomes, emails, sexos, enderecos, alturas, vacinas, totalUsuarios);
@@ -341,7 +341,7 @@ int main() {
                 fazerBackup(ids, nomes, emails, sexos, enderecos, alturas, vacinas, totalUsuarios, backupIds, backupNomes, backupEmails, backupSexos, backupEnderecos, backupAlturas, backupVacinas, &totalBackupUsuarios);
                 break;
             case 7:
-                restaurarBackup(ids, nomes, emails, sexos, enderecos, alturas, vacinas, &totalUsuarios, backupIds, backupNomes, backupEmails, backupSexos, backupEnderecos, backupAlturas, backupVacinas, totalBackupUsuarios);
+                restaurarBackup(ids, nomes, emails, sexos, enderecos, alturas, vacinas, totalUsuarios, backupIds, backupNomes, backupEmails, backupSexos, backupEnderecos, backupAlturas, backupVacinas, totalBackupUsuarios);
                 break;
             case 8:
                 printf("Encerrando o programa.\n");
